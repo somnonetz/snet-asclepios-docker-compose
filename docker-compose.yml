@@ -10,13 +10,13 @@ services:
         XNAT_DATASOURCE_USERNAME: 'xnat'
         XNAT_DATASOURCE_PASSWORD: 'xnat'
         XNAT_HIBERNATE_DIALECT: 'org.hibernate.dialect.PostgreSQL9Dialect'
-        TOMCAT_XNAT_FOLDER: ROOT
+        TOMCAT_XNAT_FOLDER: xnat
         XNAT_ROOT: /data/xnat
         XNAT_HOME: /data/xnat/home
     ports:
       - "8081:8080"
       - "8000:8000"
-      - "22:22"
+      - "1337:22"
     volumes:
       - ./xnat/plugins:/data/xnat/home/plugins
       - ./xnat-data/home/logs:/data/xnat/home/logs
@@ -44,6 +44,8 @@ services:
       - "80"
     links:
       - xnat-web
+    volumes:
+      - /home/jmz/Code/copla/copla-editor/build:/var/www/copla-editor
 
   # prometheus:
   #   image: prom/prometheus
