@@ -47,7 +47,7 @@ services:
     links:
       - xnat-web
     volumes:
-      - ../copla/copla-editor/build:/var/www/copla-editor
+      - ../copla-editor/sn-editor/build:/var/www/copla-editor
 
   # prometheus:
   #   image: prom/prometheus
