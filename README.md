@@ -1,9 +1,9 @@
 # Dockerized XNAT for PSG
-Use this repository to quickly deploy an [XNAT](https://xnat.org/) instance on [docker](https://www.docker.com/) with pre-configured for use with [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-plugin](https://github.com/somnonetz/snet-plugin)
+Use this repository to quickly deploy an [XNAT](https://xnat.org/) instance on [docker](https://www.docker.com/) pre-configured for use with [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-plugin](https://github.com/somnonetz/snet-plugin)
 
 ## Introduction
 
-this is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-compose/), see `README.md.original` for the original instructions. Bellow are set up instructions for using this with copla-editor and snet-plugin
+This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-compose/), see `README.original.md` for the original instructions. Bellow are set up instructions for using this with copla-editor and snet-plugin
 
 ## Usage
 
