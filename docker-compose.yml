@@ -47,7 +47,7 @@ services:
     links:
       - xnat-web
     volumes:
-      - /home/krefting/SOFTWARE/copla-editor/build:/var/www/copla-editor
+      - ../copla/copla-editor/build:/var/www/copla-editor
 
   # prometheus:
   #   image: prom/prometheus
