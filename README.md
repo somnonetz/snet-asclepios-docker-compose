@@ -48,7 +48,7 @@ export { autologin, host, credentials, defaultProject, defaultSubject };
 ```
 
 * `npm install && npm run build`
-* `cd ..`
+* `cd ../..`
 
 ### build snet-plugin
 
