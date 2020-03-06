@@ -1,4 +1,5 @@
-# Dockerized XNAT for PSG
+# Dockerized XNAT for Polysomnography
+
 Use this repository to quickly deploy an [XNAT](https://xnat.org/) instance for storing polysomnographies on [docker](https://www.docker.com/). Pre-configured for use with [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-plugin](https://github.com/somnonetz/snet-plugin)
 
 ## Introduction
@@ -71,7 +72,7 @@ docker-compose up -d
 
 * go to `http://localhost/xnat` and login
 * create a project and subject matching the values in your `copla-editor` config
-* go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types with default configuration values
+* go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types.
 * go to `Administer -> Site Administration -> Security` and disable CSRF tokens
 
 ### finished!
@@ -80,6 +81,5 @@ docker-compose up -d
 
 ### Troubleshooting
 
-Access the filesystem of the "docker-xnat-web" container (https://stackoverflow.com/questions/20813486/exploring-docker-containers-file-system). Find the respective docker-ID with `docker ps`. 
-
-
+* You can find xnat's logs on the host at: `./xnat-data/home/logs`
+* To get a shell on a running `xnat-web` container and access the file system run: `docker-compose exec xnat-web bash`
