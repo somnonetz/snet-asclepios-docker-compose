@@ -80,6 +80,6 @@ docker-compose up -d
 
 ### Troubleshooting
 
-Access the filesystem of the "docker-xnat-web" container. Find the respective docker-ID with `docker ps`. 
+Access the filesystem of the "docker-xnat-web" container (https://stackoverflow.com/questions/20813486/exploring-docker-containers-file-system). Find the respective docker-ID with `docker ps`. 
 
 
