@@ -29,7 +29,6 @@ git clone https://github.com/somnonetz/snet-plugin
 ### set up copla-editor
 
 * `cd copla-editor/sn-editor/`
-* `git checkout xnat17`
 * create the file `src/config.js` and add the following
 
 ```
