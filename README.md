@@ -14,16 +14,14 @@ This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-c
 * docker
 * docker-compose
 * npm
-* gradle
 
 ### get the code
 
-* grab `xnat-docker-compose`, `copla-editor` and `snet-plugin`
+* grab `xnat-docker-compose`, `copla-editor`
 
 ```
 git clone https://github.com/somnonetz/xnat-docker-compose
 git clone https://github.com/somnonetz/copla-editor
-git clone https://github.com/somnonetz/snet-plugin
 ``` 
 
 ### set up copla-editor
@@ -49,15 +47,6 @@ export { autologin, host, credentials, defaultProject, defaultSubject };
 
 * `npm install && npm run build`
 * `cd ../..`
-
-### build snet-plugin
-
-```
-cd snet-plugin/
-./gradlew jar
-cp build/libs/snet01-plugin-1.0.0.jar ../xnat-docker-compose/xnat/plugins
-cd ..
-```
 
 ### run services with xnat-docker-compose
 

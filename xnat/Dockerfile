@@ -2,6 +2,7 @@ FROM tomcat:7-jre8-alpine
 MAINTAINER Matt Kelsey <kelseym@wustl.edu>
 
 ARG XNAT_VER
+ARG SNET_PLUGIN_VER
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
@@ -41,6 +42,9 @@ RUN apk add --no-cache \
     unzip -o ../xnat-web-${XNAT_VER}.war && \
     rm -f ../xnat-web-${XNAT_VER}.war && \
     apk del wget
+
+RUN wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
+    mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
 
 EXPOSE 8080
 ENV XNAT_HOME=${XNAT_HOME} XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}
