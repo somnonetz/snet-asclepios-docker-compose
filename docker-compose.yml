@@ -23,6 +23,8 @@ services:
       - ./xnat-data/archive:/data/xnat/archive
       - ./xnat-data/build:/data/xnat/build
       - /var/run/docker.sock:/var/run/docker.sock
+      - ../../xnatdev/xnat-pipeline-engine:/opt/xnat-pipeline-engine
+      - ../snet-pipelines:/opt/snet-pipelines
     depends_on:
       - xnat-db
     environment:

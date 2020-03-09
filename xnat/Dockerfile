@@ -17,6 +17,7 @@ ADD wait-for-postgres.sh /usr/local/bin/wait-for-postgres.sh
 RUN apk add --no-cache \
         postgresql-client \
         wget \
+        python3 \
     && \
     rm -rf $CATALINA_HOME/webapps/* && \
     mkdir -p \
