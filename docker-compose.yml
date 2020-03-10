@@ -19,12 +19,13 @@ services:
       - "8000:8000"
       - "1337:22"
     volumes:
+      # - ./xnat/plugins:/data/xnat/home/plugins
+      # - ../../xnatdev/xnat-pipeline-engine:/opt/xnat-pipeline-engine
+      # - ../snet-pipelines:/opt/snet-pipelines
       - ./xnat-data/home/logs:/data/xnat/home/logs
       - ./xnat-data/archive:/data/xnat/archive
       - ./xnat-data/build:/data/xnat/build
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../xnatdev/xnat-pipeline-engine:/opt/xnat-pipeline-engine
-      - ../snet-pipelines:/opt/snet-pipelines
     depends_on:
       - xnat-db
     environment:
@@ -51,6 +52,8 @@ services:
       - "80"
     links:
       - xnat-web
+    # volumes:
+    #   - ../copla-editor/sn-editor/build:/var/www/copla-editor
 
   # prometheus:
   #   image: prom/prometheus
