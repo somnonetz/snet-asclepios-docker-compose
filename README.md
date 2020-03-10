@@ -13,40 +13,14 @@ This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-c
 * git
 * docker
 * docker-compose
-* npm
 
 ### get the code
 
-* grab `xnat-docker-compose`, `copla-editor`
+* grab `xnat-docker-compose`
 
 ```
 git clone https://github.com/somnonetz/xnat-docker-compose
-git clone https://github.com/somnonetz/copla-editor
 ``` 
-
-### set up copla-editor
-
-* `cd copla-editor/sn-editor/`
-* create the file `src/config.js` and add the following
-
-```
-const autologin = false;
-
-const host = 'http://localhost/xnat/REST';
-
-const credentials = {
-  username: 'admin',
-  password: 'admin',
-};
-
-const defaultProject = 'project1';
-const defaultSubject = 'subject1';
-
-export { autologin, host, credentials, defaultProject, defaultSubject };
-```
-
-* `npm install && npm run build`
-* `cd ../..`
 
 ### run services with xnat-docker-compose
 

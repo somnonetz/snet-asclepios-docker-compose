@@ -41,15 +41,16 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
 
   xnat-nginx:
-    build: ./nginx
+    build:
+      context: ./nginx
+      args:
+        COPLA_EDITOR_VER: '0.1.0'
     ports:
       - "80:80"
     expose:
       - "80"
     links:
       - xnat-web
-    volumes:
-      - ../copla-editor/sn-editor/build:/var/www/copla-editor
 
   # prometheus:
   #   image: prom/prometheus
