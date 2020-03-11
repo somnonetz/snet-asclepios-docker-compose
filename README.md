@@ -1,16 +1,16 @@
 # Dockerized XNAT for Polysomnography
 
-Use this repository to quickly deploy an [XNAT](https://xnat.org/) instance for storing polysomnographies on [docker](https://www.docker.com/). Pre-configured for use with [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-plugin](https://github.com/somnonetz/snet-plugin)
+Use this repository to quickly deploy an [XNAT](https://xnat.org/) instance for storing polysomnographies on [docker](https://www.docker.com/). Pre-installed with [copla-editor](https://github.com/somnonetz/copla-editor), [snet-plugin](https://github.com/somnonetz/snet-plugin) and [snet-pipelines](https://github.com/somnonetz/snet-pipelines)
 
 ## Introduction
 
-This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-compose/), see `README.original.md` for the original instructions. Bellow are set up instructions for using this with `copla-editor` and `snet-plugin`
+This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-compose/), see `README.original.md` for the original instructions. Bellow are set up instructions for using this with `copla-editor`, `snet-plugin`, `snet-pipelines`
 
 ## Usage
 
-If you just want to run xnat in docker with the latest stable versions of `copla-editor` and `snet-plugin`, set up is fairly straight forward
+If you just want to run xnat in docker with the latest stable versions of `copla-editor`, `snet-plugin` and `snet-pipelines`, set up is fairly straight forward
 
-### build and run containers
+### Build and run containers
 
 ```
 git clone https://github.com/somnonetz/xnat-docker-compose
@@ -19,38 +19,44 @@ docker-compose build
 docker-compose up -d
 ```
 
-### set up xnat
+### Set up xnat
 
-* go to `http://localhost/xnat` and login
-* create a project and subject matching the values in your `copla-editor` config (by default they are `project1` and `subject1`)
-* go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types
-* go to `Administer -> Site Administration -> Security` and disable CSRF tokens
+* Go to `http://localhost/xnat` and login
+* Create a project and subject matching the values in your `copla-editor` config (by default they are `project1` and `subject1`)
+* Go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types
+* Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
+* Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat-web:8080/xnat`
+* Go to `Adminster -> Pipelines -> Add pipeline to repository` and add a pipeline with the path: `/data/xnat/pipeline/catalog/edf_extract_headers/edf_extract_headers.xml`
 
-### finished!
+### Finished!
 
-* you should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/copla-editor/`
+* You should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/copla-editor/`
 
 ## Developing
 
-If you want to use this as a development environment for `copla-editor` and `snet-plugin`, set up is a bit more involved
+If you want to use this as a development environment for `copla-editor`, `snet-plugin` and `snet-pipelines`, set up is a bit more involved
 
-### get the code
+### Get the code
 
-* grab `xnat-docker-compose`, `copla-editor` and `snet-plugin`
+* Grab `xnat-docker-compose`, `xnat-pipeline-engine` `copla-editor`, `snet-plugin` and `snet-pipelines`
 
 ```
 git clone https://github.com/somnonetz/xnat-docker-compose
+git clone https://github.com/NrgXnat/xnat-pipeline-engine.git
 git clone https://github.com/somnonetz/copla-editor
 git clone https://github.com/somnonetz/snet-plugin
+git clone https://github.com/somnonetz/snet-pipelines
 ```
 
-### set up local volumes mounts
+### Set up local volumes mounts
 
 * `cd  xnat-docker-compose/`
-* edit `docker-compose.yml` and uncomment the following lines:
+* Edit `docker-compose.yml` and uncomment the following lines:
 
 ```
       # - ./xnat/plugins:/data/xnat/home/plugins
+      # - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
+      # - ../snet-pipelines:/tmp/snet-pipelines
 ```
 
 and
@@ -60,10 +66,10 @@ and
     #   - ../copla-editor/sn-editor/build:/var/www/copla-editor
 ```
 
-### set up copla-editor
+### Set up copla-editor
 
 * `cd copla-editor/sn-editor/`
-* create the file `src/config.js` and add the following:
+* Create the file `src/config.js` and add the following:
 
 ```
 const autologin = false;
@@ -84,7 +90,7 @@ export { autologin, host, credentials, defaultProject, defaultSubject };
 * `npm install && npm run build`
 * `cd ../..`
 
-### build snet-plugin
+### Build snet-plugin
 
 ```
 cd snet-plugin/
@@ -92,6 +98,30 @@ cd snet-plugin/
 cp build/libs/snet01-plugin-1.0.0.jar ../xnat-docker-compose/xnat/plugins
 cd ..
 ```
+
+### Set up xnat-pipeline-engine
+
+```
+cd xnat-pipeline-engine
+cp ../xnat-docker-compose/xnat/xnat-pipeline-engine-gradle.properties gradle.properties
+cd ..
+```
+
+### Build and run containers and install pipelines
+
+```
+cd xnat-docker-compose
+docker-compose build
+docker-compose up -d  # wait for service to finsish booting, use docker-compose logs xnat-web to monitor
+docker-compose exec xnat-web bash
+cd /tmp/xnat-pipeline-engine
+./gradlew
+exit
+```
+
+### Set up xnat
+
+Follow the instructions in the "Usage" section above
 
 ## Troubleshooting
 
