@@ -2,9 +2,6 @@ FROM tomcat:7-jre8-alpine
 MAINTAINER Matt Kelsey <kelseym@wustl.edu>
 
 ARG XNAT_VER
-ARG XNAT_PIPELINE_ENGINE_VER
-ARG SNET_PLUGIN_VER
-ARG SNET_PIPELINES_VER
 ARG XNAT_ROOT=/data/xnat
 ARG XNAT_HOME=/data/xnat/home
 ARG XNAT_DATASOURCE_DRIVER=org.postgresql.Driver
@@ -20,7 +17,6 @@ ADD wait-for-postgres.sh /usr/local/bin/wait-for-postgres.sh
 RUN apk add --no-cache \
         postgresql-client \
         wget \
-        python3 \
     && \
     rm -rf $CATALINA_HOME/webapps/* && \
     mkdir -p \
@@ -45,14 +41,30 @@ RUN apk add --no-cache \
     rm -f ../xnat-web-${XNAT_VER}.war && \
     apk del wget
 
-WORKDIR /tmp
+EXPOSE 8080
+ENV XNAT_HOME=${XNAT_HOME} XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}
 
-RUN wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
-    mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins
+CMD ["wait-for-postgres.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]
+
+# install snet-plugin and snet-pipelines
+
+ARG XNAT_PIPELINE_ENGINE_VER
+ARG SNET_PLUGIN_VER
+ARG SNET_PIPELINES_VER
+WORKDIR /tmp
 
 ADD xnat-pipeline-engine-gradle.properties /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER}/gradle.properties
 
-RUN wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
+RUN apk add --no-cache \
+        wget \
+        build-base \
+        python3 \
+        python3-dev \
+    && \
+    pip3 install --no-cache-dir edfrd && \
+    wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
+    mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins && \
+    wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
     tar -zxf ${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
     rm -f ${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
     wget https://github.com/somnonetz/snet-pipelines/archive/v${SNET_PIPELINES_VER}.tar.gz && \
@@ -61,10 +73,8 @@ RUN wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE
     mv snet-pipelines-${SNET_PIPELINES_VER} snet-pipelines && \
     cd xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER} && \
     ./gradlew && \
-    cd $CATALINA_HOME/webapps/${TOMCAT_XNAT_FOLDER} && \
-    rm -rf /tmp/snet-pipelines /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER}
+    cd .. && \
+    rm -rf /tmp/snet-pipelines /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER} && \
+    apk del wget build-base python3-dev
 
-EXPOSE 8080
-ENV XNAT_HOME=${XNAT_HOME} XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}
-
-CMD ["wait-for-postgres.sh", "/usr/local/tomcat/bin/catalina.sh", "run"]
+WORKDIR /
