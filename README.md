@@ -26,7 +26,7 @@ docker-compose up -d
 * Go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types
 * Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
 * Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat-web:8080/xnat`
-* Go to `Adminster -> Pipelines -> Add pipeline to repository` and add a pipeline with the path: `/data/xnat/pipeline/catalog/edf_extract_headers/edf_extract_headers.xml`
+* Go to `Adminster -> Pipelines -> Add pipeline to repository` and add a pipeline with the path: `/data/xnat/pipeline/catalog/somnonetz-pipeline/somnonetz-pipeline.xml`
 
 ### Finished!
 
