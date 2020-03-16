@@ -41,7 +41,7 @@ If you want to use this as a development environment for `copla-editor`, `snet-p
 * Grab `xnat-docker-compose`, `xnat-pipeline-engine` `copla-editor`, `snet-plugin` and `snet-pipelines`
 
 ```
-git clone https://github.com/somnonetz/xnat-docker-compose
+git clone https://github.com/somnonetz/snet-xnat-docker-compose
 git clone https://github.com/NrgXnat/xnat-pipeline-engine.git
 git clone https://github.com/somnonetz/copla-editor
 git clone https://github.com/somnonetz/snet-plugin
