@@ -13,7 +13,7 @@ If you just want to run xnat in docker with the latest stable versions of `copla
 ### Build and run containers
 
 ```
-git clone https://github.com/somnonetz/xnat-docker-compose
+git clone https://github.com/somnonetz/snet-xnat-docker-compose
 cd xnat-docker-compose
 docker-compose build
 docker-compose up -d
