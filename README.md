@@ -23,7 +23,7 @@ docker-compose up -d
 
 * Go to `http://localhost/xnat` and login
 * Create a project and subject matching the values in your `copla-editor` config (by default they are `project1` and `subject1`)
-* Go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types
+* Go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types (for now, psgScanData needs to be set as unsecure)
 * Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
 * Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat-web:8080/xnat`
 * Go to `Adminster -> Pipelines -> Add pipeline to repository` and add a pipeline with the path: `/data/xnat/pipeline/catalog/somnonetz-pipeline/somnonetz-pipeline.xml`
