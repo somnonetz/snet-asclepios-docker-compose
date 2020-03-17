@@ -6,8 +6,8 @@ services:
       args:
         XNAT_VER: '1.7.6'
         XNAT_PIPELINE_ENGINE_VER: '1.7.6'
-        SNET_PLUGIN_VER: '0.1.0'
-        SNET_PIPELINES_VER: '0.1.0'
+        SNET_PLUGIN_VER: '0.1.1'
+        SNET_PIPELINES_VER: '0.1.1'
         XNAT_DATASOURCE_DRIVER: 'org.postgresql.Driver'
         XNAT_DATASOURCE_URL: 'jdbc:postgresql://xnat-db/xnat'
         XNAT_DATASOURCE_USERNAME: 'xnat'
