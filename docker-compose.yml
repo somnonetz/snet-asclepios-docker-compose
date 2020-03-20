@@ -6,7 +6,7 @@ services:
       args:
         XNAT_VER: '1.7.6'
         XNAT_PIPELINE_ENGINE_VER: '1.7.6'
-        SNET_PLUGIN_VER: '0.1.1'
+        SNET_PLUGIN_VER: '0.1.2'
         SNET_PIPELINES_VER: '0.1.1'
         XNAT_DATASOURCE_DRIVER: 'org.postgresql.Driver'
         XNAT_DATASOURCE_URL: 'jdbc:postgresql://xnat-db/xnat'
@@ -55,7 +55,7 @@ services:
     links:
       - xnat-web
     # volumes:
-    #   - ../copla-editor/sn-editor/build:/var/www/copla-editor
+      # - ../copla-editor/sn-editor/build:/var/www/copla-editor
 
   # prometheus:
   #   image: prom/prometheus
