@@ -34,6 +34,7 @@ services:
     environment:
       - CATALINA_OPTS=-Xms128m -Xmx2048m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
       - XNAT_HOME=${XNAT_HOME}
+      - PGPASSWORD=${XNAT_DATASOURCE_PASSWORD}
 
   xnat-db:
     build: ./postgres
@@ -42,8 +43,7 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-
+      POSTGRES_PASSWORD: ${XNAT_DATASOURCE_ADMIN_PASSWORD}
   xnat-nginx:
     build:
       context: ./nginx
