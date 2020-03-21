@@ -47,7 +47,7 @@ services:
     build:
       context: ./nginx
       args:
-        COPLA_EDITOR_VER: '0.1.0'
+        COPLA_EDITOR_VER: '0.1.1'
     ports:
       - "80:80"
     expose:
