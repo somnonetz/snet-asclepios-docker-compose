@@ -4,18 +4,19 @@ services:
     build:
       context: ./xnat
       args:
-        XNAT_VER: '1.7.6'
-        XNAT_PIPELINE_ENGINE_VER: '1.7.6'
-        SNET_PLUGIN_VER: '0.1.2'
-        SNET_PIPELINES_VER: '0.1.1'
-        XNAT_DATASOURCE_DRIVER: 'org.postgresql.Driver'
-        XNAT_DATASOURCE_URL: 'jdbc:postgresql://xnat-db/xnat'
-        XNAT_DATASOURCE_USERNAME: 'xnat'
-        XNAT_DATASOURCE_PASSWORD: 'xnat'
-        XNAT_HIBERNATE_DIALECT: 'org.hibernate.dialect.PostgreSQL9Dialect'
-        TOMCAT_XNAT_FOLDER: xnat
-        XNAT_ROOT: /data/xnat
-        XNAT_HOME: /data/xnat/home
+        XNAT_VER: ${XNAT_VER}
+        XNAT_PIPELINE_ENGINE_VER: ${XNAT_PIPELINE_ENGINE_VER}
+        SNET_PLUGIN_VER: ${SNET_PLUGIN_VER}
+        SNET_PIPELINES_VER: ${SNET_PIPELINES_VER}
+        XNAT_DATASOURCE_DRIVER: ${XNAT_DATASOURCE_DRIVER}
+        XNAT_DATASOURCE_URL: ${XNAT_DATASOURCE_URL}
+        XNAT_DATASOURCE_USERNAME: ${XNAT_DATASOURCE_USERNAME}
+        XNAT_DATASOURCE_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
+        XNAT_HIBERNATE_DIALECT: ${XNAT_HIBERNATE_DIALECT}
+        TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
+        XNAT_ROOT: ${XNAT_ROOT}
+        XNAT_HOME: ${XNAT_HOME}
+
     ports:
       - "8081:8080"
       - "8000:8000"
@@ -32,7 +33,7 @@ services:
       - xnat-db
     environment:
       - CATALINA_OPTS=-Xms128m -Xmx2048m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
-      - XNAT_HOME=/data/xnat/home
+      - XNAT_HOME=${XNAT_HOME}
 
   xnat-db:
     build: ./postgres
@@ -47,7 +48,7 @@ services:
     build:
       context: ./nginx
       args:
-        COPLA_EDITOR_VER: '0.1.1'
+        COPLA_EDITOR_VER: ${COPLA_EDITOR_VER}
     ports:
       - "80:80"
     expose:
