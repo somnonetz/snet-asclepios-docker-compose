@@ -28,6 +28,7 @@ docker-compose up -d
 * Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
 * Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat-web:8080/xnat`
 * Go to `Adminster -> Pipelines -> Add pipeline to repository` and add a pipeline with the path: `/data/xnat/pipeline/catalog/somnonetz-pipeline/somnonetz-pipeline.xml`
+* Go to `Browse -> All Projects -> Project 1 -> Pipelines -> Add Pipeline` and add `somononetz-pipeline`
 
 ### Finished!
 
