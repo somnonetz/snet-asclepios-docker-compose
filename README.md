@@ -113,8 +113,9 @@ and
 ### Build and run containers and install pipelines
 
 ```sh
+cp .env.example .env
 docker-compose build
-docker-compose up -d  # wait for service to finsish booting, use docker-compose logs xnat-web to monitor
+docker-compose up -d  # wait for service to finsish booting, use `docker-compose logs -f xnat-web` to monitor
 docker-compose exec xnat-web bash
 cd /tmp/xnat-pipeline-engine
 ./gradlew
