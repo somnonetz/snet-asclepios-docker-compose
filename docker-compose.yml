@@ -16,7 +16,6 @@ services:
         TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
         XNAT_ROOT: ${XNAT_ROOT}
         XNAT_HOME: ${XNAT_HOME}
-
     ports:
       - "8081:8080"
       - "8000:8000"
@@ -44,6 +43,7 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_ADMIN_PASSWORD}
+
   xnat-nginx:
     build:
       context: ./nginx
