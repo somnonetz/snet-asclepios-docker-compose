@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   xnat-web:
     build:
@@ -36,13 +36,16 @@ services:
       - PGPASSWORD=${XNAT_DATASOURCE_PASSWORD}
 
   xnat-db:
-    build: ./postgres
+    image: postgres:9.4-alpine
     expose:
       - "5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${XNAT_DATASOURCE_ADMIN_PASSWORD}
+      POSTGRES_USER: ${XNAT_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
+      POSTGRES_DB: ${XNAT_DATASOURCE_DBNAME}
+      POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
 
   xnat-nginx:
     build:
@@ -57,26 +60,3 @@ services:
       - xnat-web
     # volumes:
       # - ../copla-editor/sn-editor/build:/var/www/copla-editor
-
-  # prometheus:
-  #   image: prom/prometheus
-  #   volumes:
-  #     - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
-  #   command:
-  #     - '-config.file=/etc/prometheus/prometheus.yaml'
-  #   ports:
-  #     - '9090:9090'
-  #   links:
-  #     - cadvisor
-  #
-  # cadvisor:
-  #   image: google/cadvisor
-  #   volumes:
-  #     - /:/rootfs:ro
-  #     - /var/run:/var/run:rw
-  #     - /sys:/sys:ro
-  #     - /var/lib/docker/:/var/lib/docker:ro
-  #   ports:
-  #     - "8082:8080"
-  #   expose:
-  #     - 8082
