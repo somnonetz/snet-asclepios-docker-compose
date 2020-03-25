@@ -2,6 +2,10 @@
 
 Use this repository to quickly deploy an [XNAT](https://xnat.org/) instance for storing polysomnographies on [docker](https://www.docker.com/). Pre-installed with [copla-editor](https://github.com/somnonetz/copla-editor), [snet-plugin](https://github.com/somnonetz/snet-plugin) and [snet-pipelines](https://github.com/somnonetz/snet-pipelines)
 
+<p align="center">
+  <img src="docker-compose.png">
+</p>
+
 ## Introduction
 
 This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-compose/), see `README.original.md` for the original instructions. Bellow are set up instructions for using this with `copla-editor`, `snet-plugin`, `snet-pipelines`
