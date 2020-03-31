@@ -1,4 +1,4 @@
-FROM nginx:1.12-alpine-perl
+FROM nginx:1.13-alpine-perl
 
 ARG COPLA_EDITOR_VER
 ARG WEB_ROOT=/var/www
