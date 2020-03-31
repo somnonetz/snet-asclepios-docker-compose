@@ -4,7 +4,6 @@ ARG COPLA_EDITOR_VER
 ARG WEB_ROOT=/var/www
 
 RUN rm /etc/nginx/conf.d/default.conf
-
 COPY nginx.conf /etc/nginx
 
 # install copla-editor

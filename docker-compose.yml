@@ -21,13 +21,13 @@ services:
       - "8000:8000"
       - "1337:22"
     volumes:
+      - ./data/xnat/home/logs:/data/xnat/home/logs
+      - ./data/xnat/archive:/data/xnat/archive
+      - ./data/xnat/build:/data/xnat/build
+      - /var/run/docker.sock:/var/run/docker.sock
       # - ./xnat/plugins:/data/xnat/home/plugins
       # - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
       # - ../snet-pipelines:/tmp/snet-pipelines
-      - ./xnat-data/home/logs:/data/xnat/home/logs
-      - ./xnat-data/archive:/data/xnat/archive
-      - ./xnat-data/build:/data/xnat/build
-      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - xnat-db
     environment:
@@ -40,7 +40,7 @@ services:
     expose:
       - "5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${XNAT_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
@@ -58,5 +58,14 @@ services:
       - "80"
     links:
       - xnat-web
-    # volumes:
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+      - ./data/nginx/conf.d:/etc/nginx/conf.d
       # - ../copla-editor/sn-editor/build:/var/www/copla-editor
+  
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
