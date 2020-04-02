@@ -52,6 +52,7 @@ ARG XNAT_PIPELINE_ENGINE_VER
 ARG SNET_PLUGIN_VER
 ARG SNET_PIPELINES_VER
 WORKDIR /tmp
+ENV NODE_PATH=/usr/lib/node_modules
 
 ADD xnat-pipeline-engine-gradle.properties /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER}/gradle.properties
 
@@ -64,8 +65,11 @@ RUN apk add --no-cache \
         python3-dev \
         libxml2-dev \
         libxslt-dev \
+        nodejs \
+        nodejs-npm \
     && \
     pip3 install --no-cache-dir six edfrd pyxnat && \
+    npm install -g asclepios-sse-client && \
     wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
     mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins && \
     wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
@@ -79,6 +83,6 @@ RUN apk add --no-cache \
     ./gradlew && \
     cd .. && \
     rm -rf /tmp/snet-pipelines /tmp/xnat-pipeline-engine-${XNAT_PIPELINE_ENGINE_VER} && \
-    apk del wget build-base python3-dev libxml2-dev libxslt-dev
+    apk del wget build-base python3-dev libxml2-dev libxslt-dev nodejs-npm
 
 WORKDIR /

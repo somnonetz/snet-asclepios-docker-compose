@@ -14,9 +14,22 @@ This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-c
 
 If you just want to run xnat in docker with the latest stable versions of `copla-editor`, `snet-plugin` and `snet-pipelines`, set up is fairly straight forward
 
-### Build and run containers
+### Run external services
 
-```sh
+First you need to run the ASCLEPIOS SSE service on the same docker host that you will be running `snet-xnat-docker-compose` on
+
+```command
+git clone https://github.com/somnonetz/asclepios-sse-docker-compose
+cd asclepios-sse-docker-compose
+cp .env.example .env # edit this file to configure
+docker-compose build
+docker-compose up -d
+cd ..
+```
+
+### Build and run
+
+```command
 git clone https://github.com/somnonetz/snet-xnat-docker-compose
 cd snet-xnat-docker-compose
 cp .env.example .env # edit this file to configure
@@ -48,7 +61,7 @@ If you want to use this as a development environment for `copla-editor`, `snet-p
 
 * Grab `snet-xnat-docker-compose`, `xnat-pipeline-engine` `copla-editor`, `snet-plugin` and `snet-pipelines`
 
-```sh
+```command
 git clone https://github.com/somnonetz/snet-xnat-docker-compose
 git clone https://github.com/NrgXnat/xnat-pipeline-engine.git
 git clone https://github.com/somnonetz/copla-editor
@@ -79,7 +92,7 @@ export { autologin, host, credentials, pipelineName, pipelineParams }
 
 ### Build snet-plugin
 
-```sh
+```command
 cd snet-plugin/
 ./gradlew jar
 cp build/libs/snet01-plugin-1.0.0.jar ../snet-xnat-docker-compose/xnat/plugins
@@ -88,7 +101,7 @@ cd ..
 
 ### Set up xnat-pipeline-engine
 
-```sh
+```command
 cd xnat-pipeline-engine
 cp ../snet-xnat-docker-compose/xnat/xnat-pipeline-engine-gradle.properties gradle.properties
 cd ..
@@ -113,7 +126,7 @@ and
 
 ### Build and run containers and install pipelines
 
-```sh
+```command
 cp .env.example .env
 docker-compose build
 docker-compose up -d  # wait for service to finsish booting, use `docker-compose logs -f xnat-web` to monitor

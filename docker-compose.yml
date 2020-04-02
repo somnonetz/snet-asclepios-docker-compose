@@ -16,10 +16,13 @@ services:
         TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
         XNAT_ROOT: ${XNAT_ROOT}
         XNAT_HOME: ${XNAT_HOME}
-    ports:
-      - "8081:8080"
-      - "8000:8000"
-      - "1337:22"
+    # ports:
+      # - "8081:8080"
+      # - "8000:8000"
+      # - "1337:22"
+    networks:
+      - xnat
+      - sse-front
     volumes:
       - ./data/xnat/home/logs:/data/xnat/home/logs
       - ./data/xnat/archive:/data/xnat/archive
@@ -39,6 +42,8 @@ services:
     image: postgres:9.4-alpine
     expose:
       - "5432"
+    networks:
+      - xnat
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     environment:
@@ -60,6 +65,8 @@ services:
       - "443"
     links:
       - xnat-web
+    networks:
+      - xnat
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
@@ -69,7 +76,16 @@ services:
   
   certbot:
     image: certbot/certbot
+    networks:
+      - xnat
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+  xnat:
+    driver: bridge
+  sse-front:
+    external:
+      name: asclepios-sse-docker-compose_front
