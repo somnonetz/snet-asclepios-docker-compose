@@ -57,6 +57,10 @@ docker-compose up -d
 
 If you want to use this as a development environment for `copla-editor`, `snet-plugin` and `snet-pipelines`, set up is a bit more involved
 
+### Run external services
+
+Follow the instructions in the "Usage" section above
+
 ### Get the code
 
 * Grab `snet-xnat-docker-compose`, `xnat-pipeline-engine` `copla-editor`, `snet-plugin` and `snet-pipelines`
