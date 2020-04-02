@@ -64,19 +64,14 @@ git clone https://github.com/somnonetz/snet-pipelines
 ```js
 const autologin = false;
 
-const host = 'http://localhost/xnat/REST';
+const host = `${window.location.origin}/xnat/REST`;
 
-const credentials = {
-  username: 'admin',
-  password: 'admin',
-};
+const credentials = {};
 
-const defaultProject = 'project1';
-const defaultSubject = 'subject1';
 const pipelineName = 'somnonetz-pipeline';
 const pipelineParams = {};
 
-export { autologin, host, credentials, defaultProject, defaultSubject, pipelineName, pipelineParams };
+export { autologin, host, credentials, pipelineName, pipelineParams }
 ```
 
 * `npm install && npm run build`
