@@ -37,6 +37,12 @@ services:
       - CATALINA_OPTS=-Xms128m -Xmx2048m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
       - XNAT_HOME=${XNAT_HOME}
       - PGPASSWORD=${XNAT_DATASOURCE_PASSWORD}
+      - SSE_URL=${SSE_URL}
+      - SSE_KEY_G=${SSE_KEY_G}
+      - SSE_KENC=${SSE_KENC}
+      - TA_URL=${TA_URL}
+      - SALT_VALUE=${SALT_VALUE}
+      - IV_VALUE=${IV_VALUE}
 
   xnat-db:
     image: postgres:9.4-alpine

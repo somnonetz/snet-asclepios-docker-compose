@@ -68,8 +68,15 @@ RUN apk add --no-cache \
         nodejs \
         nodejs-npm \
     && \
-    pip3 install --no-cache-dir six edfrd pyxnat && \
-    npm install -g asclepios-sse-client && \
+    pip3 install --no-cache-dir \
+        six \
+        edfrd \
+        pyxnat \
+    && \
+    npm install -g \
+        asclepios-sse-client \
+        argparse \
+    && \
     wget https://github.com/somnonetz/snet-plugin/releases/download/v${SNET_PLUGIN_VER}/snet-plugin-${SNET_PLUGIN_VER}.jar && \
     mv snet-plugin-${SNET_PLUGIN_VER}.jar ${XNAT_HOME}/plugins && \
     wget https://github.com/NrgXnat/xnat-pipeline-engine/archive/${XNAT_PIPELINE_ENGINE_VER}.tar.gz && \
