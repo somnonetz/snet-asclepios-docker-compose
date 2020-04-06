@@ -8,21 +8,15 @@ services:
         XNAT_PIPELINE_ENGINE_VER: ${XNAT_PIPELINE_ENGINE_VER}
         SNET_PLUGIN_VER: ${SNET_PLUGIN_VER}
         SNET_PIPELINES_VER: ${SNET_PIPELINES_VER}
-        XNAT_DATASOURCE_DRIVER: ${XNAT_DATASOURCE_DRIVER}
-        XNAT_DATASOURCE_URL: ${XNAT_DATASOURCE_URL}
         XNAT_DATASOURCE_USERNAME: ${XNAT_DATASOURCE_USERNAME}
-        XNAT_DATASOURCE_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
-        XNAT_HIBERNATE_DIALECT: ${XNAT_HIBERNATE_DIALECT}
         TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
         XNAT_ROOT: ${XNAT_ROOT}
         XNAT_HOME: ${XNAT_HOME}
-    # ports:
-      # - "8081:8080"
-      # - "8000:8000"
-      # - "1337:22"
     networks:
       - xnat
       - sse-front
+    expose:
+      - 8080
     volumes:
       - ./data/xnat/home/logs:/data/xnat/home/logs
       - ./data/xnat/archive:/data/xnat/archive
@@ -34,15 +28,21 @@ services:
     depends_on:
       - xnat-db
     environment:
-      - CATALINA_OPTS=-Xms128m -Xmx2048m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
-      - XNAT_HOME=${XNAT_HOME}
-      - PGPASSWORD=${XNAT_DATASOURCE_PASSWORD}
-      - SSE_URL=${SSE_URL}
-      - SSE_KEY_G=${SSE_KEY_G}
-      - SSE_KENC=${SSE_KENC}
-      - TA_URL=${TA_URL}
-      - SALT_VALUE=${SALT_VALUE}
-      - IV_VALUE=${IV_VALUE}
+        XNAT_HOME: ${XNAT_HOME}
+        XNAT_DATASOURCE_DRIVER: ${XNAT_DATASOURCE_DRIVER}
+        XNAT_DATASOURCE_URL: ${XNAT_DATASOURCE_URL}
+        XNAT_DATASOURCE_USERNAME: ${XNAT_DATASOURCE_USERNAME}
+        XNAT_DATASOURCE_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
+        XNAT_HIBERNATE_DIALECT: ${XNAT_HIBERNATE_DIALECT}
+        TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
+        CATALINA_OPTS: -Xms128m -Xmx2048m -Dxnat.home=${XNAT_HOME} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+        PGPASSWORD: ${XNAT_DATASOURCE_PASSWORD}
+        SSE_URL: ${SSE_URL}
+        SSE_KEY_G: ${SSE_KEY_G}
+        SSE_KENC: ${SSE_KENC}
+        TA_URL: ${TA_URL}
+        SALT_VALUE: ${SALT_VALUE}
+        IV_VALUE: ${IV_VALUE}
 
   xnat-db:
     image: postgres:9.4-alpine
