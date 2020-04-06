@@ -1,17 +1,7 @@
 version: '3'
 services:
   xnat-web:
-    build:
-      context: ./xnat
-      args:
-        XNAT_VER: ${XNAT_VER}
-        XNAT_PIPELINE_ENGINE_VER: ${XNAT_PIPELINE_ENGINE_VER}
-        SNET_PLUGIN_VER: ${SNET_PLUGIN_VER}
-        SNET_PIPELINES_VER: ${SNET_PIPELINES_VER}
-        XNAT_DATASOURCE_USERNAME: ${XNAT_DATASOURCE_USERNAME}
-        TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
-        XNAT_ROOT: ${XNAT_ROOT}
-        XNAT_HOME: ${XNAT_HOME}
+    image: somnonetz/snet-xnat
     networks:
       - xnat
       - sse-front
@@ -59,10 +49,7 @@ services:
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
 
   xnat-nginx:
-    build:
-      context: ./nginx
-      args:
-        COPLA_EDITOR_VER: ${COPLA_EDITOR_VER}
+    image: somnonetz/snet-nginx
     ports:
       - "80:80"
       - "443:443"
