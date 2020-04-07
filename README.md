@@ -23,7 +23,7 @@ git clone https://github.com/somnonetz/asclepios-sse-docker-compose
 cd asclepios-sse-docker-compose
 cp .env.example .env # edit this file to configure
 docker-compose build
-docker-compose up -d
+docker-compose up -d sse-server ta
 cd ..
 ```
 
