@@ -14,19 +14,6 @@ This is a fork of [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-c
 
 If you just want to run xnat in docker with the latest stable versions of `copla-editor`, `snet-plugin` and `snet-pipelines`, set up is fairly straight forward
 
-### Run external services
-
-First you need to run the ASCLEPIOS SSE service on the same docker host that you will be running `snet-xnat-docker-compose` on
-
-```command
-git clone https://github.com/somnonetz/asclepios-sse-docker-compose
-cd asclepios-sse-docker-compose
-cp .env.example .env # edit this file to configure
-docker-compose build
-docker-compose up -d sse-server ta
-cd ..
-```
-
 ### Build and run
 
 ```command
