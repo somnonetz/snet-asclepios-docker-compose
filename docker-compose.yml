@@ -4,7 +4,7 @@ services:
     image: somnonetz/snet-xnat
     networks:
       - xnat
-      # - sse-front
+      - sse-front
     expose:
       - 8080
     volumes:
@@ -27,12 +27,12 @@ services:
         TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
         CATALINA_OPTS: -Xms128m -Xmx2048m -Dxnat.home=${XNAT_HOME} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
         PGPASSWORD: ${XNAT_DATASOURCE_PASSWORD}
-        # SSE_URL: ${SSE_URL}
-        # SSE_KEY_G: ${SSE_KEY_G}
-        # SSE_KENC: ${SSE_KENC}
-        # TA_URL: ${TA_URL}
-        # SALT_VALUE: ${SALT_VALUE}
-        # IV_VALUE: ${IV_VALUE}
+        SSE_CLIENT_SSE_SERVER_URL: ${SSE_CLIENT_SSE_SERVER_URL}
+        SSE_CLIENT_TA_URL: ${SSE_CLIENT_TA_URL}
+        SSE_CLIENT_KEY_G: ${SSE_CLIENT_KEY_G}
+        SSE_CLIENT_KENC: ${SSE_CLIENT_KENC}
+        SSE_CLIENT_SALT_VALUE: ${SSE_CLIENT_SALT_VALUE}
+        SSE_CLIENT_IV_VALUE: ${SSE_CLIENT_IV_VALUE}
 
   xnat-db:
     image: postgres:9.4-alpine
@@ -79,6 +79,6 @@ services:
 networks:
   xnat:
     driver: bridge
-#  sse-front:
-#    external:
-#      name: asclepios-sse-docker-compose_front
+  sse-front:
+    external:
+      name: asclepios-sse-docker-compose_front
