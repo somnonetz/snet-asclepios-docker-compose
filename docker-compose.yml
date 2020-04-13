@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   xnat-web:
     image: somnonetz/snet-xnat
@@ -81,4 +81,4 @@ networks:
     driver: bridge
   sse-front:
     external:
-      name: asclepios-sse-docker-compose_front
+      name: sse-front
