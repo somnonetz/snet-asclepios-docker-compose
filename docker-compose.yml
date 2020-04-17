@@ -58,6 +58,7 @@ services:
       - "443"
     networks:
       - snet-apps
+      - asclepios
     depends_on:
       - xnat
     volumes:
