@@ -1,10 +1,10 @@
 version: '3.5'
 services:
-  xnat-web:
+  xnat:
     image: somnonetz/snet-xnat
     networks:
-      - xnat
-      - sse-front
+      - snet-apps
+      - asclepios
     expose:
       - 8080
     volumes:
@@ -39,16 +39,16 @@ services:
     expose:
       - "5432"
     networks:
-      - xnat
+      - snet-apps
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - xnat-db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${XNAT_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
       POSTGRES_DB: ${XNAT_DATASOURCE_DBNAME}
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
 
-  xnat-nginx:
+  nginx:
     image: somnonetz/snet-nginx
     ports:
       - "80:80"
@@ -56,10 +56,8 @@ services:
     expose:
       - "80"
       - "443"
-    links:
-      - xnat-web
     networks:
-      - xnat
+      - snet-apps
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
@@ -70,15 +68,18 @@ services:
   certbot:
     image: certbot/certbot
     networks:
-      - xnat
+      - snet-apps
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 networks:
-  xnat:
+  snet-apps:
     driver: bridge
-  sse-front:
+  asclepios:
     external:
-      name: sse-front
+      name: asclepios
+
+volumes:
+  xnat-db-data:
