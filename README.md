@@ -19,7 +19,7 @@ If you just want to run xnat in docker with the latest stable versions of `copla
 ```command
 git clone https://github.com/somnonetz/snet-docker-compose
 
-cd snet-xnat-docker-compose
+cd snet-docker-compose
 cp .env.example .env # edit this file to configure
 mkdir -p data/nginx/conf.d
 cp nginx/xnat.local.conf data/nginx/conf.d
@@ -89,7 +89,7 @@ export { autologin, host, credentials, pipelineName, pipelineParams }
 ```command
 cd snet-plugin/
 ./gradlew jar
-cp build/libs/snet01-plugin-1.0.0.jar ../snet-xnat-docker-compose/xnat/plugins
+cp build/libs/snet01-plugin-1.0.0.jar ../snet-docker-compose/xnat/plugins
 cd ..
 ```
 
