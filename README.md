@@ -23,7 +23,7 @@ cp .env.example .env # edit this file to configure
 mkdir -p data/nginx/conf.d
 cp nginx/xnat.local.conf data/nginx/conf.d
 docker-compose build
-docker network create sse-front
+docker network create asclepios
 docker-compose up -d
 ```
 
