@@ -58,6 +58,8 @@ services:
       - "443"
     networks:
       - snet-apps
+    depends_on:
+      - xnat
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
