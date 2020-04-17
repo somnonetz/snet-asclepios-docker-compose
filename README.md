@@ -17,11 +17,13 @@ If you just want to run xnat in docker with the latest stable versions of `copla
 ### Build and run
 
 ```command
-git clone https://github.com/somnonetz/snet-xnat-docker-compose
+git clone https://github.com/somnonetz/snet-docker-compose
+
 cd snet-xnat-docker-compose
 cp .env.example .env # edit this file to configure
 mkdir -p data/nginx/conf.d
 cp nginx/xnat.local.conf data/nginx/conf.d
+
 docker-compose build
 docker network create asclepios
 docker-compose up -d
@@ -30,12 +32,12 @@ docker-compose up -d
 ### Set up xnat
 
 * Go to `http://localhost/xnat` and login
-* Create a project and subject matching the values in your `copla-editor` config (by default they are `project1` and `subject1`)
-* Go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types (for now, psgScanData needs to be set as unsecure)
 * Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
-* Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat-web:8080/xnat`
+* Go to `Administer -> Data Types -> Set Up Additional Data types` and add all the `snet01:*` data-types (for now, psgScanData needs to be set as unsecure)
+* Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat:8080/xnat`
 * Go to `Adminster -> Pipelines -> Add pipeline to repository` and add a pipeline with the path: `/data/xnat/pipeline/catalog/somnonetz-pipeline/somnonetz-pipeline.xml`
-* Go to `Browse -> All Projects -> Project 1 -> Pipelines -> Add Pipeline` and add `somononetz-pipeline`
+* Create at least one project and subject
+* Go to `Browse -> All Projects -> Project -> Pipelines -> Add Pipeline` and add `somononetz-pipeline`
 
 ### Finished!
 
@@ -51,10 +53,10 @@ Follow the instructions in the "Usage" section above
 
 ### Get the code
 
-* Grab `snet-xnat-docker-compose`, `xnat-pipeline-engine` `copla-editor`, `snet-plugin` and `snet-pipelines`
+* Grab `snet-docker-compose`, `xnat-pipeline-engine` `copla-editor`, `snet-plugin` and `snet-pipelines`
 
 ```command
-git clone https://github.com/somnonetz/snet-xnat-docker-compose
+git clone https://github.com/somnonetz/snet-docker-compose
 git clone https://github.com/NrgXnat/xnat-pipeline-engine.git
 git clone https://github.com/somnonetz/copla-editor
 git clone https://github.com/somnonetz/snet-plugin
@@ -95,12 +97,12 @@ cd ..
 
 ```command
 cd xnat-pipeline-engine
-cp ../snet-xnat-docker-compose/xnat/xnat-pipeline-engine-gradle.properties gradle.properties
+cp ../snet-docker-compose/xnat/xnat-pipeline-engine-gradle.properties gradle.properties
 cd ..
 ```
 ### Set up local volumes mounts
 
-* `cd  snet-xnat-docker-compose/`
+* `cd  snet-docker-compose/`
 * Edit `docker-compose.yml` and uncomment the following lines:
 
 ```yml
@@ -122,7 +124,7 @@ and
 cp .env.example .env
 docker-compose build
 docker-compose up -d  # wait for service to finsish booting, use `docker-compose logs -f xnat-web` to monitor
-docker-compose exec xnat-web bash
+docker-compose exec xnat bash
 cd /tmp/xnat-pipeline-engine
 ./gradlew
 exit
@@ -135,4 +137,4 @@ Follow the instructions in the "Usage" section above
 ## Troubleshooting
 
 * You can find xnat's logs on the host at: `./xnat-data/home/logs`
-* To get a shell on a running `xnat-web` container and access the file system run: `docker-compose exec xnat-web bash`
+* To get a shell on a running `xnat` container and access the file system run: `docker-compose exec xnat bash`
