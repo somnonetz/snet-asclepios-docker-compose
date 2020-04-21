@@ -8,13 +8,13 @@ services:
     expose:
       - 8080
     volumes:
-      - ./data/xnat/home/logs:/data/xnat/home/logs
+      - ./data/xnat/logs:/data/xnat/home/logs
       - ./data/xnat/archive:/data/xnat/archive
       - ./data/xnat/build:/data/xnat/build
-      - /var/run/docker.sock:/var/run/docker.sock
-      # - ./xnat/plugins:/data/xnat/home/plugins
+      # - ./data/xnat/plugins:/data/xnat/home/plugins
       # - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
       # - ../snet-pipelines:/tmp/snet-pipelines
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - xnat-db
     environment:
@@ -41,7 +41,7 @@ services:
     networks:
       - snet-apps
     volumes:
-      - xnat-db-data:/var/lib/postgresql/data
+      - ./data/xnat-db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${XNAT_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
@@ -76,13 +76,16 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  
+  shell:
+    image: somnonetz/snet-extract-edf-header
+    networks:
+      - snet-apps
 
 networks:
   snet-apps:
     driver: bridge
+    name: snet-apps
   asclepios:
     external:
       name: asclepios
-
-volumes:
-  xnat-db-data:

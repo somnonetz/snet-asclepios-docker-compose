@@ -1,6 +1,2 @@
-# Created by .ignore support plugin (hsz.mobi)
-*.swp
-*.swo
 data/*
-xnat/plugins
 .env
