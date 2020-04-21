@@ -20,11 +20,18 @@ docker-compose up -d
 
 ### Set up xnat
 
+#### Site settings
+
 * Go to `http://localhost/xnat` and login
 * Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
 * Go to `Administer -> Data Types -> Set Up Additional Data types` and set `snet01:psgScanData*` as unsecure
 * Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat:8080/xnat`
 * Create at least one project and subject
+
+#### Container Service commands
+
+* Go to `Administer -> Plugin Settings -> Images & Commands` and add `somnonetz/snet-extract-edf-header`
+* Go to your project and go to `Project settings -> Configure Commands` and enable `somnonetz/snet-extract-edf-header:latest`
 
 ### Finished!
 
