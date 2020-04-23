@@ -2,6 +2,9 @@
 
 Sleep research apps on [docker](https://www.docker.com/). Includes [XNAT](https://xnat.org/) with [snet-plugin](https://github.com/somnonetz/snet-plugin), [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-asclepios-search](https://github.com/somnonetz/snet-asclepios-search)
 
+<p align="center">
+  <img src="overview.png">
+</p>
 
 ## Usage
 
