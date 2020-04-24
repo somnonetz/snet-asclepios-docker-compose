@@ -18,6 +18,7 @@ services:
     depends_on:
       - xnat-db
     environment:
+        XNAT_ROOT: ${XNAT_ROOT}
         XNAT_HOME: ${XNAT_HOME}
         XNAT_DATASOURCE_DRIVER: ${XNAT_DATASOURCE_DRIVER}
         XNAT_DATASOURCE_URL: ${XNAT_DATASOURCE_URL}
@@ -59,7 +60,9 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - ./data/nginx/conf.d:/etc/nginx/conf.d
-      # - ../copla-editor/sn-editor/build:/var/www/copla-editor
+      # - ../copla-editor/sn-editor/build:/var/www/copla-editor/sn-editor
+      # - ../copla-editor/sn-editor/build:/var/www/copla-editor/sn-webrtc
+      # - ../snet-asclepios-search/build:/var/www/asclepios-search
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
