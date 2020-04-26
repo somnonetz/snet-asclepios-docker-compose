@@ -38,7 +38,7 @@ docker-compose up -d
 
 ### Finished!
 
-* You should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/copla-editor/`
+* You should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/sn-editor/` and `http://localhost/sn-webrtc/`
 
 ## Troubleshooting
 
