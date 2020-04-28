@@ -68,6 +68,7 @@ services:
       SSE_SERVER_BASE_URL: ${SSE_SERVER_BASE_URL}
       TA_BASE_URL: ${TA_BASE_URL}
       SALT_VALUE: ${SALT_VALUE}
+      IV_VALUE: ${IV_VALUE}
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
