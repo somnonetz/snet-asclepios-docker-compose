@@ -63,6 +63,11 @@ services:
       # - ../copla-editor/sn-editor/build:/var/www/copla-editor/sn-editor
       # - ../copla-editor/sn-editor/build:/var/www/copla-editor/sn-webrtc
       # - ../snet-asclepios-search/build:/var/www/asclepios-search
+    environment:
+      XNAT_API_URL: ${XNAT_API_URL}
+      SSE_SERVER_BASE_URL: ${SSE_SERVER_BASE_URL}
+      TA_BASE_URL: ${TA_BASE_URL}
+      SALT_VALUE: ${SALT_VALUE}
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
