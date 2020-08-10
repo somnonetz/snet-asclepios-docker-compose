@@ -61,14 +61,13 @@ services:
       - ./data/certbot/www:/var/www/certbot
       - ./data/nginx/conf.d:/etc/nginx/conf.d
       # - ../copla-editor/sn-editor/build:/var/www/copla-editor/sn-editor
-      # - ../copla-editor/sn-editor/build:/var/www/copla-editor/sn-webrtc
-      # - ../snet-asclepios-search/build:/var/www/asclepios-search
+      # - ../snet-asclepios-search:/var/www/asclepios-search
     environment:
       XNAT_API_URL: ${XNAT_API_URL}
-      SSE_SERVER_BASE_URL: ${SSE_SERVER_BASE_URL}
-      TA_BASE_URL: ${TA_BASE_URL}
-      SALT_VALUE: ${SALT_VALUE}
-      IV_VALUE: ${IV_VALUE}
+      SSE_CLIENT_SSE_SERVER_URL: ${SSE_CLIENT_SSE_SERVER_URL}
+      SSE_CLIENT_TA_URL: ${SSE_CLIENT_TA_URL}
+      SSE_CLIENT_SALT_VALUE: ${SSE_CLIENT_SALT_VALUE}
+      SSE_CLIENT_IV_VALUE: ${SSE_CLIENT_IV_VALUE}
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
