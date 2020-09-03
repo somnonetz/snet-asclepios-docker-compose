@@ -15,7 +15,10 @@ If you just want to run xnat in docker with the latest stable versions of `snet-
 ```command
 cp .env.example .env # edit this file to configure
 mkdir -p data/nginx/conf.d
-cp xnat.local.conf data/nginx/conf.d
+cp nginx.local.conf data/nginx/conf.d
+
+mkdir -p data/xnat
+cp ldap-provider.properties data/xnat/
 
 docker network create asclepios
 docker-compose up -d

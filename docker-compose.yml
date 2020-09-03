@@ -11,6 +11,7 @@ services:
       - ./data/xnat/logs:/data/xnat/home/logs
       - ./data/xnat/archive:/data/xnat/archive
       - ./data/xnat/build:/data/xnat/build
+      - ./data/xnat/ldap-provider.properties:/data/xnat/home/config/auth/ldap-provider.properties
       # - ./data/xnat/plugins:/data/xnat/home/plugins
       # - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
       # - ../snet-pipelines:/tmp/snet-pipelines
@@ -41,7 +42,6 @@ services:
       POSTGRES_USER: ${XNAT_DATASOURCE_USERNAME}
       POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
       POSTGRES_DB: ${XNAT_DATASOURCE_DBNAME}
-      POSTGRES_PASSWORD: ${XNAT_DATASOURCE_PASSWORD}
 
   nginx:
     image: somnonetz/snet-nginx
@@ -68,6 +68,7 @@ services:
       SSE_CLIENT_TA_URL: ${SSE_CLIENT_TA_URL}
       SSE_CLIENT_SALT_VALUE: ${SSE_CLIENT_SALT_VALUE}
       SSE_CLIENT_IV_VALUE: ${SSE_CLIENT_IV_VALUE}
+      KEYCLOAK_HOST: ${KEYCLOAK_HOST}
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
@@ -78,6 +79,62 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  slapd:
+    image: osixia/openldap
+    environment:
+        LDAP_ORGANISATION: snet
+        LDAP_DOMAIN: snet.com
+        LDAP_ADMIN_PASSWORD: secret
+    networks:
+      - snet-apps
+    expose:
+      - "389"
+    volumes:
+      - ./data/slapd/database:/var/lib/ldap
+      - ./data/slapd/config:/etc/ldap/slapd.d
+    
+  phpldapadmin:
+    image: osixia/phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: slapd
+      PHPLDAPADMIN_HTTPS: 'false'
+    expose:
+      - "80"
+    networks:
+      - snet-apps
+    depends_on:
+      - slapd
+
+  keycloak-db:
+    image: postgres:9.4-alpine
+    expose:
+      - "5432"
+    networks:
+      - snet-apps
+    volumes:
+      - ./data/keycloak-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${KEYCLOAK_DB_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      POSTGRES_DB: ${KEYCLOAK_DB_DATABASE}
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:11.0.0
+    networks:
+      - snet-apps
+    expose:
+      - "8080"
+    environment:
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KEYCLOAK_LOGLEVEL: ${KEYCLOAK_LOGLEVEL}
+      DB_VENDOR: ${KEYCLOAK_DB_VENDOR}
+      DB_ADDR: ${KEYCLOAK_DB_ADDR}
+      DB_DATABASE: ${KEYCLOAK_DB_DATABASE}
+      DB_USER: ${KEYCLOAK_DB_USER}
+      DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      PGPASSWORD: ${KEYCLOAK_DB_PASSWORD}
 
 networks:
   snet-apps:
