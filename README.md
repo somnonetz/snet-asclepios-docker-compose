@@ -11,7 +11,7 @@ If you just want to run xnat in docker with the latest stable versions of `snet-
 ```command
 cp .env.example .env # edit this file to configure
 mkdir -p data/nginx/conf.d
-cp nginx.local.conf data/nginx/conf.d
+cp snet.local.conf data/nginx/conf.d
 
 mkdir -p data/xnat
 cp ldap-provider.properties data/xnat/
@@ -37,7 +37,7 @@ docker-compose up -d
 
 ### Finished!
 
-* You should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/sn-editor` and `http://localhost/sn-webrtc`
+* You should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/sn-editor`
 
 ## Troubleshooting
 

@@ -12,9 +12,12 @@ services:
       - ./data/xnat/archive:/data/xnat/archive
       - ./data/xnat/build:/data/xnat/build
       - ./data/xnat/ldap-provider.properties:/data/xnat/home/config/auth/ldap-provider.properties
-      # - ./data/xnat/plugins:/data/xnat/home/plugins
-      # - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
-      # - ../snet-pipelines:/tmp/snet-pipelines
+      - ./data/xnat/abac-authorization-client-for-tomcat-1.0.0-SNAPSHOT-jar-with-dependencies.jar:/usr/local/tomcat/lib/abac-authorization-client-for-tomcat-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+      - ./data/xnat/web.xml:/usr/local/tomcat/conf/web.xml
+      - ./data/xnat/truststore-client.p12:/usr/local/tomcat/truststore-client.p12
+      - ./data/xnat/plugins/xnat-keycloak-js-plugin-0.1.0.jar:/data/xnat/home/plugins/xnat-keycloak-js-plugin-0.1.0.jar
+      - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
+      - ../snet-pipelines:/tmp/snet-pipelines
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - xnat-db
@@ -29,6 +32,14 @@ services:
         TOMCAT_XNAT_FOLDER: ${TOMCAT_XNAT_FOLDER}
         CATALINA_OPTS: -Xms128m -Xmx2048m -Dxnat.home=${XNAT_HOME} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
         PGPASSWORD: ${XNAT_DATASOURCE_PASSWORD}
+        AZ_CLIENT_TRUST_STORE_FILE: /usr/local/tomcat/truststore-client.p12
+        AZ_CLIENT_TRUST_STORE_TYPE: PKCS12
+        AZ_CLIENT_TRUST_STORE_PASSWORD: asclepios
+        AZ_SERVER_ENDPOINTS: https://pdp:7071/checkJsonAccessRequest
+        AZ_SERVER_ACCESS_KEY: 7235687126587231675321756752657236156321765723
+        # AZ_CALL_DISABLED: false
+        AZ_CALL_LOAD_BALANCE_METHOD: ORDER
+        AZ_CALL_RETRIES: 1
 
   xnat-db:
     image: postgres:9.4-alpine
@@ -55,7 +66,9 @@ services:
       - snet-apps
       - asclepios
     depends_on:
+      - keycloak
       - xnat
+      - phpldapadmin
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
@@ -125,6 +138,8 @@ services:
       - snet-apps
     expose:
       - "8080"
+    depends_on:
+      - keycloak-db
     environment:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
