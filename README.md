@@ -1,14 +1,22 @@
-# snet-docker-compose
+# snet-asclepios-docker-compose
 
-Sleep research apps on [docker](https://www.docker.com/). Includes [XNAT](https://xnat.org/) with [snet-plugin](https://github.com/somnonetz/snet-plugin), [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-asclepios-search](https://github.com/somnonetz/snet-asclepios-search)
-
-## Usage
-
-If you just want to run xnat in docker with the latest stable versions of `snet-plugin` and `copla-edtior`, set up is fairly straight forward
+Encrypted sleep research on [docker](https://www.docker.com/). Includes [XNAT](https://xnat.org/) with [snet-asclepios-plugin](https://github.com/somnonetz/snet-asclepios-plugin), [copla-editor](https://github.com/somnonetz/copla-editor) and [snet-asclepios-search](https://github.com/somnonetz/snet-asclepios-search)
 
 ### Run
 
+* First you need run the ASCLEPIOS services
+
 ```command
+git clone https://github.com/somnonetz/asclepios-docker-compose.git
+cd asclepios-docker-compose
+docker-compose up -d
+cd ..
+```
+
+* Then you can set up and run the snet services 
+
+```command
+git clone https://github.com/somnonetz/snet-asclepios-docker-compose.git
 cp .env.example .env # edit this file to configure
 mkdir -p data/nginx/conf.d
 cp snet.local.conf data/nginx/conf.d
@@ -16,28 +24,30 @@ cp snet.local.conf data/nginx/conf.d
 mkdir -p data/xnat
 cp ldap-provider.properties data/xnat/
 
-docker network create asclepios
 docker-compose up -d
 ```
+
+### Set up LDAP and Keycloak
+
+* TODO
 
 ### Set up xnat
 
 #### Site settings
 
-* Go to `http://localhost/xnat` and login
+* Go to `http://xnat.localhost/xnat` and login
 * Go to `Administer -> Site Administration -> Security` and disable CSRF tokens
-* Go to `Administer -> Data Types -> Set Up Additional Data types` and set `snet01:psgScanData*` as unsecure
+* Go to `Administer -> Data Types -> Set Up Additional Data types` and set `snet02:encPsgScanData*` as unsecure
 * Go to `Administer -> Site Administration -> Pipeline Settings` and set the processing url to `http://xnat:8080/xnat`
 * Create at least one project and subject
 
-#### Container Service commands
-
-* Go to `Administer -> Plugin Settings -> Images & Commands` and add `somnonetz/snet-extract-edf-header`
-* Go to your project and go to `Project settings -> Configure Commands` and enable `somnonetz/snet-extract-edf-header:latest`
-
 ### Finished!
 
-* You should now be able to access `xnat` at `http://localhost/xnat` and `copla-editor` at `http://localhost/sn-editor`
+You should now be able to access the following applications:
+
+* `xnat` at `http://xnat.localhost/xnat`
+* `copla-editor` at `http://xnat.localhost/sn-editor`
+* `snet-asclepios-search` at `http://xnat.localhost/asclepios-search`
 
 ## Troubleshooting
 
