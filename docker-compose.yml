@@ -11,14 +11,11 @@ services:
       - ./data/xnat/logs:/data/xnat/home/logs
       - ./data/xnat/archive:/data/xnat/archive
       - ./data/xnat/build:/data/xnat/build
-      - ./data/xnat/ldap-provider.properties:/data/xnat/home/config/auth/ldap-provider.properties
-      # - ./data/xnat/plugins/snet-asclepios-plugin-0.1.0.jar:/data/xnat/home/plugins/snet-plugin-0.1.0.jar
-      # - ./data/xnat/plugins/xnat-keycloak-js-plugin-0.1.0.jar:/data/xnat/home/plugins/xnat-keycloak-js-plugin-0.1.0.jar
-      # - ./data/xnat/abac-authorization-client-for-tomcat-1.0.0-SNAPSHOT-jar-with-dependencies.jar:/usr/local/tomcat/lib/abac-authorization-client-for-tomcat-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+      - ./data/xnat/openid-provider.properties:/data/xnat/home/config/auth/openid-provider.properties
       # - ./data/xnat/web.xml:/usr/local/tomcat/conf/web.xml
-      # - ./data/xnat/truststore-client.p12:/usr/local/tomcat/truststore-client.p12
-      # - ../xnat-pipeline-engine:/tmp/xnat-pipeline-engine
-      # - ../snet-pipelines:/tmp/snet-pipelines
+      # - ./data/xnat/plugins/snet-asclepios-plugin-0.1.0.jar:/data/xnat/home/plugins/snet-asclepios-plugin-0.1.0.jar
+      # - ../snet-asclepios-search:/usr/local/tomcat/webapps/asclepios-search
+      # - ../copla-editor/sn-editor/build:/usr/local/tomcat/webapps/sn-editor
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - xnat-db
@@ -39,14 +36,6 @@ services:
       SSE_CLIENT_SALT_VALUE: ${SSE_CLIENT_SALT_VALUE}
       SSE_CLIENT_IV_VALUE: ${SSE_CLIENT_IV_VALUE}
       KEYCLOAK_HOST: ${KEYCLOAK_HOST}
-      # AZ_CLIENT_TRUST_STORE_FILE: /usr/local/tomcat/truststore-client.p12
-      # AZ_CLIENT_TRUST_STORE_TYPE: PKCS12
-      # AZ_CLIENT_TRUST_STORE_PASSWORD: asclepios
-      # AZ_SERVER_ENDPOINTS: https://pdp:7071/checkJsonAccessRequest
-      # AZ_SERVER_ACCESS_KEY: 7235687126587231675321756752657236156321765723
-      # AZ_CALL_DISABLED: false
-      # AZ_CALL_LOAD_BALANCE_METHOD: ORDER
-      # AZ_CALL_RETRIES: 1
 
   xnat-db:
     image: postgres:9.4-alpine
@@ -77,12 +66,11 @@ services:
     depends_on:
       - keycloak
       - xnat
-      - phpldapadmin
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - ./data/nginx/conf.d:/etc/nginx/conf.d
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
     image: certbot/certbot
@@ -92,32 +80,6 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-
-  slapd:
-    image: osixia/openldap
-    environment:
-        LDAP_ORGANISATION: snet
-        LDAP_DOMAIN: snet.com
-        LDAP_ADMIN_PASSWORD: secret
-    networks:
-      - snet-apps
-    expose:
-      - "389"
-    volumes:
-      - ./data/slapd/database:/var/lib/ldap
-      - ./data/slapd/config:/etc/ldap/slapd.d
-    
-  phpldapadmin:
-    image: osixia/phpldapadmin
-    environment:
-      PHPLDAPADMIN_LDAP_HOSTS: slapd
-      PHPLDAPADMIN_HTTPS: 'false'
-    expose:
-      - "80"
-    networks:
-      - snet-apps
-    depends_on:
-      - slapd
 
   keycloak-db:
     image: postgres:9.4-alpine
@@ -136,6 +98,9 @@ services:
     image: quay.io/keycloak/keycloak:11.0.0
     networks:
       - snet-apps
+      - asclepios
+    ports:
+      - 8080:8080
     expose:
       - "8080"
     depends_on:

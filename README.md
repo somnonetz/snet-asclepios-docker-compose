@@ -22,12 +22,12 @@ mkdir -p data/nginx/conf.d
 cp snet.local.conf data/nginx/conf.d
 
 mkdir -p data/xnat
-cp ldap-provider.properties data/xnat/
+cp openid-provider.properties data/xnat/
 
 docker-compose up -d
 ```
 
-### Set up LDAP and Keycloak
+### Set up Keycloak
 
 * TODO
 
