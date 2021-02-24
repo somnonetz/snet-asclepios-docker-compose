@@ -51,5 +51,5 @@ You should now be able to access the following applications:
 
 ## Troubleshooting
 
-* You can find xnat's logs on the host at: `./xnat-data/home/logs`
+* You can find xnat's logs on the host at: `./data/xnat/home/logs`
 * To get a shell on a running `xnat` container and access the file system run: `docker-compose exec xnat bash`
