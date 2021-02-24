@@ -22,7 +22,7 @@ mkdir -p data/nginx/conf.d
 cp snet.local.conf data/nginx/conf.d
 
 mkdir -p data/xnat
-cp openid-provider.properties data/xnat/
+cp openid-provider.properties data/xnat/ # edit this file to configure keycloak IP
 
 docker-compose up -d
 ```
