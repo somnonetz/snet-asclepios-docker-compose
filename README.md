@@ -8,7 +8,7 @@ Encrypted sleep research on [docker](https://www.docker.com/). Includes [XNAT](h
 
 ```command
 git clone https://github.com/somnonetz/asclepios-docker-compose.git
-cd asclepios-docker-compose
+cd asclepios-docker-compose/sse
 docker-compose up -d
 cd ..
 ```
@@ -25,6 +25,20 @@ mkdir -p data/xnat
 cp openid-provider.properties data/xnat/ # edit this file to configure keycloak IP
 
 docker-compose up -d
+```
+
+### Set up host routing
+
+For local development, as an alternative to real DNS, we use the operating systems hosts file.
+
+* Edit your systems hosts file (`/etc/hosts` on most unix-like systems) and add the following lines:
+
+```
+127.0.0.1	keycloak
+127.0.0.1	minio
+127.0.0.1	xnat.localhost
+127.0.0.1	ta.localhost
+127.0.0.1	sse.localhost
 ```
 
 ### Set up Keycloak
